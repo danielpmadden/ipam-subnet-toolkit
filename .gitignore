@@ -1,17 +1,20 @@
-# Python bytecode
+# Python cache / bytecode
 __pycache__/
 *.py[cod]
 *.pyo
+*.pyd
 
-# Distribution / packaging
+# Packaging / build artifacts
 *.egg-info/
-dist/
-build/
 .eggs/
+build/
+dist/
+*.whl
 
-# Testing
+# Test / coverage artifacts
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 
 # Virtual environments
@@ -19,7 +22,12 @@ htmlcov/
 venv/
 env/
 
-# Editor
+# Type checker / lint caches
+.mypy_cache/
+.ruff_cache/
+
+# IDE / editor files
 .idea/
 .vscode/
 *.swp
+.DS_Store

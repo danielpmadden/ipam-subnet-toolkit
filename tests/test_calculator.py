@@ -198,7 +198,7 @@ class TestEdgeCases:
     def test_slash32_first_host_is_address(self):
         assert subnet("192.168.1.1/32").first_usable_host == "192.168.1.1"
 
-    def test_slash32_last_host_none(self):
+    def test_slash32_last_usable_host_is_none(self):
         assert subnet("192.168.1.1/32").last_usable_host is None
 
     def test_slash0_default_route(self):
@@ -218,7 +218,7 @@ class TestLoopback:
     def test_is_loopback(self):
         assert subnet("127.0.0.0/8").is_loopback is True
 
-    def test_is_private_reflects_stdlib(self):
+    def test_is_private_matches_stdlib_behavior(self):
         # Python's ipaddress module considers 127.0.0.0/8 private (RFC 6890).
         # We expose the stdlib value directly without overriding it.
         result = subnet("127.0.0.0/8")

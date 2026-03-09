@@ -32,6 +32,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+from . import __version__
 from .calculator import SubnetInfo, calculate_subnet, contains_ip
 
 
@@ -94,8 +95,8 @@ def cmd_contains(args: argparse.Namespace) -> int:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
-    status = "BELONGS TO" if result else "does NOT belong to"
-    print(f"\n  {args.ip}  {status}  {args.cidr}\n")
+    status = "is in" if result else "is NOT in"
+    print(f"\n  {args.ip} {status} {args.cidr}\n")
     return 0 if result else 2
 
 
@@ -128,8 +129,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ipam",
         description=(
-            "ipam-subnet-toolkit — IPv4 subnet calculator and IPAM helper.\n\n"
-            "Analyse CIDR blocks, check IP membership, and export results to JSON."
+            "Inspect IPv4 CIDR blocks from the command line.\n\n"
+            "Use sub-commands to view subnet details, test IP membership, and export JSON."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
@@ -141,7 +142,7 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--version", action="version", version="ipam-subnet-toolkit 1.0.0"
+        "--version", action="version", version=f"ipam-subnet-toolkit {__version__}"
     )
 
     subparsers = parser.add_subparsers(
@@ -153,7 +154,7 @@ def build_parser() -> argparse.ArgumentParser:
     # ---- info ---------------------------------------------------------------
     info_parser = subparsers.add_parser(
         "info",
-        help="Display detailed subnet information for a CIDR block.",
+        help="Show subnet details for an IPv4 CIDR block.",
         description=(
             "Calculate and display all properties of an IPv4 CIDR block:\n"
             "network address, broadcast address, subnet mask, host range, and more."
@@ -182,7 +183,7 @@ def build_parser() -> argparse.ArgumentParser:
     # ---- contains -----------------------------------------------------------
     contains_parser = subparsers.add_parser(
         "contains",
-        help="Check whether an IP address belongs to a subnet.",
+        help="Check whether an IPv4 address is inside a CIDR block.",
         description=(
             "Test IP membership: returns exit code 0 if the IP is in the subnet,\n"
             "or exit code 2 if it is not (suitable for shell scripting)."
@@ -210,7 +211,7 @@ def build_parser() -> argparse.ArgumentParser:
     # ---- export -------------------------------------------------------------
     export_parser = subparsers.add_parser(
         "export",
-        help="Export subnet analysis results to a JSON file.",
+        help="Write subnet details to a JSON file.",
         description="Calculate subnet information and save it as a formatted JSON file.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
